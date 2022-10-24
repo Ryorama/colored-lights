@@ -65,7 +65,7 @@ public final class BlockLightColorLoader implements SimpleResourceReloadListener
                     parseColorMappings(mappings, overrideColors);
                 }
             } catch (JsonSyntaxException e) {
-                ColoredLights.LOGGER.error("Failed to parse colored light mappings at {}", resource.getId(), e);
+                ColoredLights.LOGGER.error("Failed to parse colored light mappings at {}", new Identifier(Identifier.DEFAULT_NAMESPACE, resource.getResourcePackName()), e);
             }
         }
 

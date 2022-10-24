@@ -61,17 +61,8 @@ public class WorldRendererMixin implements ColoredLightWorldRenderer, ColoredLig
         this.lastChunkLightColors = 0;
     }
 
-    @Inject(
-            method = "renderLayer",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gl/GlUniform;set(FFF)V"),
-            locals = LocalCapture.CAPTURE_FAILHARD
-    )
-    private void prepareRenderChunk(
-            RenderLayer layer, MatrixStack transform, double cameraX, double cameraY, double cameraZ, Matrix4f projection, CallbackInfo ci,
-            boolean opaque, ObjectListIterator<WorldRenderer.ChunkInfo> chunkIterator,
-            VertexFormat vertexFormat, Shader shader, GlUniform chunkOffset, boolean renderedChunk,
-            WorldRenderer.ChunkInfo chunk, ChunkBuilder.BuiltChunk builtChunk, VertexBuffer buffer, BlockPos origin
-    ) {
+    @Inject(method = "renderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gl/GlUniform;set(FFF)V"), locals = LocalCapture.CAPTURE_FAILHARD)
+    private void prepareRenderChunk(RenderLayer renderLayer, MatrixStack matrices, double cameraX, double cameraY, double cameraZ, Matrix4f positionMatrix, CallbackInfo ci, double cameraZ, Matrix4f positionMatrix, boolean bl, ObjectListIterator objectListIterator, Shader shader, GlUniform glUniform, WorldRenderer.ChunkInfo chunkInfo2, ChunkBuilder.BuiltChunk builtChunk, VertexBuffer vertexBuffer, BlockPos blockPos) {
         var chunkLightColors = this.chunkLightColors;
         if (chunkLightColors == null) return;
 
@@ -96,7 +87,7 @@ public class WorldRendererMixin implements ColoredLightWorldRenderer, ColoredLig
         }
     }
 
-    @Inject(method = "render", at = @At("INVOKE"))
+    @Inject(method = "render", at = @At("HEAD"))
     private void beforeRender(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f positionMatrix, CallbackInfo ci) {
         float skyBrightness = this.world.getStarBrightness(tickDelta);
         ColoredLightEntityRenderContext.setGlobal(skyBrightness);
@@ -107,11 +98,7 @@ public class WorldRendererMixin implements ColoredLightWorldRenderer, ColoredLig
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/EntityRenderDispatcher;render(Lnet/minecraft/entity/Entity;DDDFFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V"),
             locals = LocalCapture.CAPTURE_FAILHARD
     )
-    private void beforeRenderEntity(
-            Entity entity, double cameraX, double cameraY, double cameraZ,
-            float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, CallbackInfo ci,
-            double entityX, double entityY, double entityZ, float entityYaw
-    ) {
+    private void beforeRenderEntity(Entity entity, double entityX, double entityY, double entityZ, float tickDelta2, MatrixStack matrices2, VertexConsumerProvider vertexConsumers2, CallbackInfo ci, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, double d, double e, double f, float g) {
         this.read(entityX, entityY, entityZ, ColoredLightEntityRenderContext::set);
     }
 

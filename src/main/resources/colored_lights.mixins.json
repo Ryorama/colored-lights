@@ -14,7 +14,7 @@
     "render.entity.ItemRendererMixin",
     "render.entity.ModelPartMixin",
     "render.particle.ParticleManagerMixin",
-    "resource.ResourceImplMixin",
+    "resource.ResourceMixin",
     "shader.ShaderMixin"
   ],
   "injectors": {

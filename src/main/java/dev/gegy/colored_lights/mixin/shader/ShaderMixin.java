@@ -5,6 +5,7 @@ import dev.gegy.colored_lights.resource.shader.PatchedUniform;
 import dev.gegy.colored_lights.resource.shader.ShaderPatchManager;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.client.gl.GlUniform;
+import net.minecraft.client.gl.Program;
 import net.minecraft.client.render.Shader;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.resource.ResourceFactory;
@@ -15,6 +16,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 import java.util.Map;
@@ -25,8 +27,8 @@ public abstract class ShaderMixin implements PatchedShader {
 
     private final Map<PatchedUniform, GlUniform> patchedUniforms = new Reference2ObjectOpenHashMap<>();
 
-    @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ResourceFactory;getResource(Lnet/minecraft/util/Identifier;)Lnet/minecraft/resource/Resource;"))
-    private void initEarly(ResourceFactory factory, String name, VertexFormat format, CallbackInfo ci) {
+    @Inject(method = "loadProgram", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ResourceFactory;getResourceOrThrow(Lnet/minecraft/util/Identifier;)Lnet/minecraft/resource/Resource;"))
+    private static void loadProgram(ResourceFactory factory, Program.Type type, String name, CallbackInfoReturnable<Program> cir) {
         ShaderPatchManager.startPatching(name);
     }
 
