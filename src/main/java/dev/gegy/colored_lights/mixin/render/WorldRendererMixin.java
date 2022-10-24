@@ -62,7 +62,7 @@ public class WorldRendererMixin implements ColoredLightWorldRenderer, ColoredLig
     }
 
     @Inject(method = "renderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gl/GlUniform;set(FFF)V"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void prepareRenderChunk(RenderLayer renderLayer, MatrixStack matrices, double cameraX, double cameraY, double cameraZ, Matrix4f positionMatrix, CallbackInfo ci, double cameraZ, Matrix4f positionMatrix, boolean bl, ObjectListIterator objectListIterator, Shader shader, GlUniform glUniform, WorldRenderer.ChunkInfo chunkInfo2, ChunkBuilder.BuiltChunk builtChunk, VertexBuffer vertexBuffer, BlockPos blockPos) {
+    private void prepareRenderChunk(RenderLayer renderLayer, MatrixStack matrices, double cameraX, double cameraY, double cameraZ, Matrix4f positionMatrix, CallbackInfo ci, double camZ, Matrix4f posMatrix, boolean b, ObjectListIterator objectListIterator, Shader shader, GlUniform glUniform, WorldRenderer.ChunkInfo chunkInfo2, ChunkBuilder.BuiltChunk builtChunk, VertexBuffer vertexBuffer, BlockPos blockPos) {
         var chunkLightColors = this.chunkLightColors;
         if (chunkLightColors == null) return;
 
